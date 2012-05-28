@@ -23,7 +23,7 @@ Creating the RR-Database
       RRA:MAX:0.9:60:1488               \
       RRA:MAX:0.99:1440:775
 
-Configuring the script
+Configuring the parser script
 ----------------------
 
 In read_streamdata.pl customize the settings for
@@ -31,3 +31,16 @@ In read_streamdata.pl customize the settings for
 - STREAM_SERVER_URL
 - STREAM_TITLE
 - RRD_FILE
+
+Plotting an image
+-----------------
+
+    rrdtool graph stream.png --disable-rrdtool-tag -w 800 -h 250 --end now --start end-12h \
+      DEF:last_listener=stream.rrd:listener:LAST       \
+      DEF:average_listener=stream.rrd:listener:AVERAGE \
+      CDEF:trend=last_listener,1800,TRENDNAN           \
+      SHIFT:trend:-900                                 \
+      AREA:trend#acacff:"Current listener - Trend"     \
+      AREA:last_listener#999999cc:"Current listener"   \
+      LINE1:average_listener#000000cc:"Average listener / hour"
+
