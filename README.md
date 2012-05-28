@@ -15,13 +15,13 @@ You have to install the following Perl modules using your package manager or cpa
 Creating the RR-Database
 ------------------------
 
-  rrdtool create stream.rrd --step=60 \
-    DS:listener:GAUGE:100:0:999       \
-    RRA:LAST:0.5:1:20160              \
-    RRA:AVERAGE:0.9:60:1488           \
-    RRA:AVERAGE:0.99:1440:775         \
-    RRA:MAX:0.9:60:1488               \
-    RRA:MAX:0.99:1440:775
+    rrdtool create stream.rrd --step=60 \
+      DS:listener:GAUGE:100:0:999       \
+      RRA:LAST:0.5:1:20160              \
+      RRA:AVERAGE:0.9:60:1488           \
+      RRA:AVERAGE:0.99:1440:775         \
+      RRA:MAX:0.9:60:1488               \
+      RRA:MAX:0.99:1440:775
 
 Configuring the script
 ----------------------
