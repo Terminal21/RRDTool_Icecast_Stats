@@ -35,7 +35,9 @@ In read_streamdata.pl customize the settings for
 Plotting an image
 -----------------
 
-    rrdtool graph stream.png --disable-rrdtool-tag -w 800 -h 250 --end now --start end-12h \
+    cd ./rrdtool
+
+    rrdtool graph ../htdocs/stats/stream_12h.png --disable-rrdtool-tag -w 800 -h 250 --end now --start end-12h \
       DEF:last_listener=stream.rrd:listener:LAST       \
       DEF:average_listener=stream.rrd:listener:AVERAGE \
       CDEF:trend=last_listener,1800,TRENDNAN           \
