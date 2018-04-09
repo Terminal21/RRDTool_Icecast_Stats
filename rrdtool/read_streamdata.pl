@@ -31,7 +31,7 @@ sub text_trigger {
     return ;
   }
 
-  if ( ($_[0] eq "Current Listeners:") &&  ($station_dataspace) ) { # Current listeners is what we are looking for
+  if ( ($_[0] eq "Listeners (current):") &&  ($station_dataspace) ) { # Current listeners is what we are looking for
     $listener_dataspace = $counter ;
     return ;
   }
