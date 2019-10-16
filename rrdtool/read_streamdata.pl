@@ -1,8 +1,9 @@
 #!/usr/bin/env perl
 
 use constant STREAM_SERVER_URL => "http://streaming.fueralle.org:8000" ;
-use constant STREAM_TITLE => "Radio Corax MP3 Stream" ;
+use constant STREAM_TITLE => "Radio CORAX" ;
 use constant RRD_FILE => "./stream.rrd" ;
+
 use LWP::Simple ;
 use HTML::Parser ;
 use RRDTool::OO ;
@@ -13,6 +14,7 @@ $station_dataspace = 0 ;
 $listener_dataspace = 0 ;
 
 $counter = 0 ;
+$listener = 0 ;
 
 $icecast_xml = get(STREAM_SERVER_URL) ;
 #die "Couldn't reach stream server" unless defined $icecast_xml ; # Unknown -> RRDTool ergaenzen
@@ -31,13 +33,14 @@ sub text_trigger {
     return ;
   }
 
-  if ( ($_[0] eq "Current Listeners:") &&  ($station_dataspace) ) { # Current listeners is what we are looking for
+  if ( ($_[0] eq "Listeners (current):") &&  ($station_dataspace) ) { # Current listeners is what we are looking for
     $listener_dataspace = $counter ;
     return ;
   }
 
-  if ( ($_[0] =~ /\d+/) && ($listener_dataspace) && ($counter-$listener_dataspace < 3)) { # The digits less then three text-events later represents listeners
-    $listener = $_[0] ;
+  if ( ($_[0] =~ /\d+/) && ($listener_dataspace) && ($counter-$listener_dataspace < 3)) { # The digits two text-events later represents listeners
+    print "$listener_dataspace\t$counter\n" ;
+    $listener += $_[0] ;
 
     $station_dataspace = 0 ;  # We have done, so we are out of scope
     $listener_dataspace = 0 ;
@@ -50,4 +53,3 @@ die "Couldn't open RR-Database\n" unless defined $rrd ;
 $rrd->update($listener) ;
 
 #print "$listener\n" ;
-
